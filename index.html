@@ -1,17 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app='myApp' lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
   <link rel="stylesheet" href="css/main.min.css">
 
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="scripts/script.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="scripts/controller.js"></script>
   <title>Pomodoro Clock</title>
 </head>
-<body>
+
+<body ng-controller="pomodoroController as pc">
+
+  <h1>Pomodoro Clock</h1>
+  <div class="length">
+    <div class="break">
+      <p>Break Length</p>
+      <button class="minus" ng-click="pc.breakChange(-1)">-</button>
+      <h3 ng-model="pc.break">5</h3>
+      <button class="plus" ng-click="pc.breakChange(1)">+</button>
+    </div>
+    <div class="session">
+      <p>Session length</p>
+      <button class="minus" ng-click="pc.sessionChange(-1)">-</button>
+      <h3 ng-model="pc.session">25</h3>
+      <button class="plus" ng-click="pc.sessionChange(1)">+</button>
+    </div>
+  </div> <!-- end length -->
+  <div class="timer" ng-click="pc.toggleTimer()">
+    <p>Session</p>
+    <p>{{pc.timer}}</p>
+  </div>
 
 </body>
+
 </html>

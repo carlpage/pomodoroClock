@@ -22,19 +22,19 @@
     <div class="break">
       <p>Break Length</p>
       <button class="minus" ng-click="pc.breakChange(-1)">-</button>
-      <h3 ng-model="pc.break">5</h3>
+      <h3 ng-model="pc.break">{{pc.break}}</h3>
       <button class="plus" ng-click="pc.breakChange(1)">+</button>
     </div>
     <div class="session">
       <p>Session length</p>
       <button class="minus" ng-click="pc.sessionChange(-1)">-</button>
-      <h3 ng-model="pc.session">25</h3>
+      <h3 ng-model="pc.session">{{pc.session}}</h3>
       <button class="plus" ng-click="pc.sessionChange(1)">+</button>
     </div>
   </div> <!-- end length -->
   <div class="timer" ng-click="pc.toggleTimer()">
     <p>Session</p>
-    <p>{{pc.timer}}</p>
+    <p>{{ pc.timer}}</p>
   </div>
 
 </body>

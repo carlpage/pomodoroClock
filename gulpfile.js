@@ -4,6 +4,7 @@ var gulp = require('gulp');
     cleanCSS = require('gulp-clean-css'),
     notify = require('gulp-notify'),
     imagemin = require('gulp-imagemin'),
+    stripDebug = require('gulp-strip-debug'),
     uglify = require('gulp-uglify'),
     rename = require('gulp-rename'),
     plumber = require('gulp-plumber'),
@@ -28,17 +29,18 @@ gulp.task('styles', function() {
     .pipe(browserSync.reload({stream: true}));
 });
 
-// gulp.task('scripts', function() {
-//   gulp.src(['./scripts/**.js', '!./js/*/min.js'])
-//     .pipe(plumber(plumberErrorHandler))
-//     .pipe(rename({suffix: '.min'}))
-//     .pipe(uglify().on('error', function(err) {
-//      gutil.log(gutil.colors.red('[Error]'), err.toString());
-//      this.emit('end');
-//      }))
-//     .pipe(gulp.dest('./js'))
-//     .pipe(browserSync.reload({stream: true}));
-// });
+gulp.task('scripts', function() {
+  gulp.src(['./scripts/**.js', '!./js/*/min.js'])
+    .pipe(plumber(plumberErrorHandler))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(stripDebug())
+    .pipe(uglify().on('error', function(err) {
+      gutil.log(gutil.colors.red('[Error]'), err.toString());
+      this.emit('end');
+    }))
+    .pipe(gulp.dest('./js'))
+    .pipe(browserSync.reload({stream: true}));
+});
 
 // gulp.task('images', function() {
 //   gulp.src('./images/*.*')
@@ -60,10 +62,10 @@ gulp.task('serve', function() {
       baseDir: './'
     }
   });
-  // gulp.watch('./scripts/*.js', ['scripts']);
+  gulp.watch('./scripts/*.js', ['scripts']);
   gulp.watch('./scss/*.scss', ['styles']);
   // gulp.watch('./images/*.*', ['images']);
   gulp.watch('./*.html', ['html']);
 });
 
-gulp.task('default', ['styles', 'html', 'serve']);
+gulp.task('default', ['styles', 'html', 'scripts', 'serve']);

@@ -1,7 +1,3 @@
-
-
-smallestCommons([1,5]);
-
 var myApp = angular.module('myApp', []);
 
 myApp.controller('pomodoroController', function($interval) {
@@ -11,33 +7,93 @@ myApp.controller('pomodoroController', function($interval) {
 
   vm.break = 5;
   vm.session = 25;
-  vm.timer = 25;
-  vm.started = false;
+  vm.runTimer = false;
   vm.seconds = 0;
+  vm.sessionName = 'Session';
+  vm.timeLeft = vm.session;
+  vm.currentTotal;
 
-  vm.incrementTimer = function() {
-    vm.timer -= 1;
-  }
+  var runTimer = false;
+  var secs = 60;
+  vm.originalTime = vm.session;
 
-  vm.breakChange = function(num) {
+  function secondsToHms(d) {
+    console.log(d);
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+    return (
+      (h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s
+    );
+  } // end secondsToHms
+
+  vm.breakChange = function(time) {
     console.log('here');
-    num += vm.break;
+    if (!runTimer) {
+      vm.break += time;
+      if (vm.break < 1) {
+        vm.break = 1
+      }
+      if (vm.sessionName === 'Break') {
+        vm.timeLeft = vm.break;
+        vm.originalTime = vm.break;
+        secs = 60 * vm.break
+      }
+    }
   } // end breakChange
 
-  vm.sessionChange = function(num) {
-    console.log(num);
-    console.log('{{{{}}}}');
-    num += vm.session;
+  vm.sessionChange = function(time) {
+    if (!runTimer) {
+      if (vm.currentName === 'Session') {
+        vm.session += time;
+        if (vm.session < 1) {
+          vm.session = 1
+        }
+        vm.timeLeft = vm.session;
+        vm.originalTime = vm.session;
+        secs = 60 * vm.session
+      }
+    }
   } // end sessionChange
 
   vm.toggleTimer = function() {
-
+    console.log('in toggleTimer');
+    if (!runTimer) {
+      if (vm.currentName === 'Session') {
+        vm.currentLength = vm.session;
+      } else {
+        vm.currentLength = vm.break;
+      }
+      updateTimer();
+      runTimer = $interval(updateTimer, 1000);
+    } else {
+      $interval.cancel(runTimer);
+      runTimer = false;
+    }
   } // end toggleTimer
 
-
-
-
-
-
+  function updateTimer() {
+    secs -= 1;
+    if (secs < 0) {
+      if (vm.sessionName === 'Break') {
+        vm.sessionName = 'Session';
+        vm.currentLength = vm.session;
+        vm.timeLeft = 60 * vm.session;
+        vm.originalTime = vm.session;
+        secs = 60 * vm.session;
+      } else {
+        vm.sessionName = "Break";
+        vm.currentLength = vm.break;
+        vm.timeLeft = 60 * vm.break;
+        vm.originalTime = vm.break;
+        secs = 60 * vm.break;
+      }
+    } else {
+      vm.timeLeft = secondsToHms(secs);
+      var denom = 60 * vm.originalTime;
+      var perc = Math.abs((secs/denom) * 100 - 100);
+    }
+  } // end updateTimer
 
 }); // end controller

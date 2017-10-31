@@ -7,11 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-  <link rel="stylesheet" href="css/main.min.css">
+  <link rel="stylesheet" href="dist/css/main.min.css">
 
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="bower_components/angular/angular.min.js"></script>
-  <script src="scripts/controller.js"></script>
+  <script src="dev/scripts/controller.js"></script>
   <title>Pomodoro Clock</title>
 </head>
 
@@ -22,18 +22,18 @@
     <div class="break">
       <p>Break Length</p>
       <button class="minus" ng-click="pc.breakChange(-1)">-</button>
-      <h3 ng-model="pc.break">{{pc.break}}</h3>
+      <h3 ng-model="pc.break">{{ pc.break }}</h3>
       <button class="plus" ng-click="pc.breakChange(1)">+</button>
     </div>
     <div class="session">
       <p>Session length</p>
       <button class="minus" ng-click="pc.sessionChange(-1)">-</button>
-      <h3 ng-model="pc.session">{{pc.session}}</h3>
+      <h3 ng-model="pc.session">{{ pc.session }}</h3>
       <button class="plus" ng-click="pc.sessionChange(1)">+</button>
     </div>
   </div> <!-- end length -->
   <div class="timer" ng-click="pc.toggleTimer()">
-    <p>{{pc.sessionName}}</p>
+    <p>{{ pc.sessionName }}</p>
     <p>{{ pc.timeLeft }}</p>
   </div>
 

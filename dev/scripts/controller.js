@@ -7,14 +7,13 @@ myApp.controller('pomodoroController', function($interval) {
 
   vm.break = 5;
   vm.session = 25;
-  vm.runTimer = false;
-  vm.seconds = 0;
   vm.sessionName = 'Session';
+  // vm.currentName === 'Session';
   vm.timeLeft = vm.session;
   vm.currentTotal;
 
   var runTimer = false;
-  var secs = 60;
+  var secs = 60 * vm.timeLeft;
   vm.originalTime = vm.session;
 
   function secondsToHms(d) {
@@ -27,35 +26,38 @@ myApp.controller('pomodoroController', function($interval) {
       (h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s
     );
   } // end secondsToHms
-
+ 
   vm.breakChange = function(time) {
     console.log('here');
     if (!runTimer) {
       vm.break += time;
       if (vm.break < 1) {
-        vm.break = 1
+        vm.break = 1;
       }
       if (vm.sessionName === 'Break') {
         vm.timeLeft = vm.break;
         vm.originalTime = vm.break;
-        secs = 60 * vm.break
+        secs = 60 * vm.break;
       }
     }
-  } // end breakChange
+  }; // end breakChange
 
   vm.sessionChange = function(time) {
+    console.log(time);
+    console.log(runTimer);
     if (!runTimer) {
-      if (vm.currentName === 'Session') {
+      console.log(vm.sessionName);
+      if (vm.sessionName === 'Session') {
         vm.session += time;
         if (vm.session < 1) {
-          vm.session = 1
+          vm.session = 1;
         }
         vm.timeLeft = vm.session;
         vm.originalTime = vm.session;
-        secs = 60 * vm.session
+        secs = 60 * vm.session;
       }
     }
-  } // end sessionChange
+  }; // end sessionChange
 
   vm.toggleTimer = function() {
     console.log('in toggleTimer');
@@ -65,13 +67,14 @@ myApp.controller('pomodoroController', function($interval) {
       } else {
         vm.currentLength = vm.break;
       }
+
       updateTimer();
       runTimer = $interval(updateTimer, 1000);
     } else {
       $interval.cancel(runTimer);
       runTimer = false;
     }
-  } // end toggleTimer
+  }; // end toggleTimer
 
   function updateTimer() {
     secs -= 1;
@@ -83,7 +86,7 @@ myApp.controller('pomodoroController', function($interval) {
         vm.originalTime = vm.session;
         secs = 60 * vm.session;
       } else {
-        vm.sessionName = "Break";
+        vm.sessionName = 'Break';
         vm.currentLength = vm.break;
         vm.timeLeft = 60 * vm.break;
         vm.originalTime = vm.break;

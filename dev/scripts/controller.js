@@ -82,6 +82,11 @@ function pomodoroController($interval) {
   function updateTimer() {
     secs -= 1;
     if (secs < 0) {
+      // audio
+      var ogg = 'https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg';
+      var audio = new Audio(ogg);
+      audio.play();
+
       if (vm.sessionName === 'Break') {
         vm.sessionName = 'Session';
         vm.currentLength = vm.session;

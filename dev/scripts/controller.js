@@ -1,6 +1,10 @@
-var myApp = angular.module('myApp', []);
+angular.module('myApp', []);
 
-myApp.controller('pomodoroController', function($interval) {
+angular.module('myApp').controller('pomodoroController', pomodoroController);
+
+pomodoroController.$inject = ['$interval'];
+
+function pomodoroController($interval) {
   console.log('in the controller');
 
   var vm = this;
@@ -8,7 +12,6 @@ myApp.controller('pomodoroController', function($interval) {
   vm.break = 5;
   vm.session = 25;
   vm.sessionName = 'Session';
-  // vm.currentName === 'Session';
   vm.timeLeft = vm.session;
   vm.currentTotal;
 
@@ -99,4 +102,4 @@ myApp.controller('pomodoroController', function($interval) {
     }
   } // end updateTimer
 
-}); // end controller
+} // end pomodoroController
